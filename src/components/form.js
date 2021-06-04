@@ -1,6 +1,15 @@
 import React from 'react';
 
-const Form = ({inputText,setInputText, todos, setTodos,setStatus}) => {
+const Form = ({inputText,setInputText, todos, setTodos,setStatus, updateTodos, setUpdateTodos}) => {
+    
+    const updateTodo = (title,id,completed) =>{
+        const newTodo = todos.map((todo) => 
+            todo.id === id ? {title, id, completed} : todo
+        )
+        setTodos(newTodo);
+        setUpdateTodos(""); 
+    }
+    
     const inputTextHandler = (event) => {
        // console.log(event.target.value);
         setInputText(event.target.value);
@@ -8,11 +17,14 @@ const Form = ({inputText,setInputText, todos, setTodos,setStatus}) => {
     const submitTodoHandler = (event) =>{
        // console.log(event);
         event.preventDefault();
-        setTodos([
-            ...todos, 
-            {text: inputText, completed: false, id: Math.random()*100 },
-        ]);
-            setInputText("");
+        if(!updateTodo){
+            setTodos([
+                ...todos, 
+                {text: inputText, completed: false, id: Math.random()*100 },]);
+                setInputText("");
+            }else{
+                updateTodos(inputText, updateTodos.id, updateTodos.completed);
+            }
     };
     const statusHandler = (event) =>{
         //console.log(event.target.value);
